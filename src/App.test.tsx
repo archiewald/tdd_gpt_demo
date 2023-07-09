@@ -7,20 +7,29 @@ beforeEach(() => {
 });
 
 describe("Add Todo Feature", () => {
-  it("should allow user to input a title for the new todo item, not exceeding 256 characters", () => {
+  it("should allow user to input a title for the new todo item, not exceeding 256 characters", async () => {
     // given
     render(<App />);
     const input = screen.getByPlaceholderText("Todo Title");
 
     // when
-    userEvent.type(input, "a".repeat(256) + "b");
+    await userEvent.type(input, "a".repeat(256) + "b");
 
     // then
     expect(input).toHaveValue("a".repeat(256));
   });
-  it.todo(
-    "should allow user to add an optional description to the new todo item, not exceeding 1024 characters"
-  );
+  it("should allow user to add an optional description to the new todo item, not exceeding 1024 characters", async () => {
+    // given
+    render(<App />);
+    const textarea = screen.getByPlaceholderText("Todo Description");
+
+    // when
+    await userEvent.type(textarea, "a".repeat(1025));
+
+    // then
+    expect(textarea).toHaveValue("a".repeat(1024));
+  });
+
   it.todo("should allow user to save the new todo item");
   it.todo(
     "should display the new todo item on the 'Pending Todo' list upon successful saving"

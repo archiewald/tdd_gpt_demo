@@ -1,21 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, ChangeEvent } from "react";
 import "./App.css";
 
-function App() {
-  const [title, setTitle] = useState("");
+type FormFields = {
+  title: string;
+  description: string;
+};
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setTitle(e.target.value);
+function useForm(initialState: FormFields) {
+  const [formState, setFormState] = useState<FormFields>(initialState);
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
+
+  return { formState, handleInputChange };
+}
+
+function App() {
+  const { formState, handleInputChange } = useForm({
+    title: "",
+    description: "",
+  });
 
   return (
     <div className="App">
       <input
         type="text"
         placeholder="Todo Title"
-        value={title}
+        name="title"
+        value={formState.title}
         onChange={handleInputChange}
         maxLength={256}
+      />
+      <textarea
+        placeholder="Todo Description"
+        name="description"
+        value={formState.description}
+        onChange={handleInputChange}
+        maxLength={1024}
       />
     </div>
   );
