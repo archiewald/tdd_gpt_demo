@@ -47,6 +47,7 @@ describe("Add Todo Feature", () => {
     expect(titleInput).toHaveValue("");
     expect(descriptionInput).toHaveValue("");
   });
+
   it("should display the new todo item on the 'Pending Todo' list upon successful saving", async () => {
     // given
     render(<App />);

@@ -19,6 +19,7 @@ function App() {
   return (
     <div className="App">
       <input
+        className="input-field"
         type="text"
         placeholder="Todo Title"
         name="title"
@@ -27,31 +28,37 @@ function App() {
         maxLength={256}
       />
       <textarea
+        className="input-field"
         placeholder="Todo Description"
         name="description"
         value={formState.description}
         onChange={handleInputChange}
         maxLength={1024}
       />
-      <button onClick={handleAddTodo}>Add Todo</button>
-      <div role="list" aria-label="Pending Todo">
-        <h2>Pending Todo</h2>
+      <button className="add-button" onClick={handleAddTodo}>
+        Add Todo
+      </button>
+      <div className="todo-list" role="list" aria-label="Pending Todo">
+        <h2 className="todo-heading">Pending Todo</h2>
         {pendingTodos.map((todo, index) => (
-          <div key={index}>
-            <p>{todo.title}</p>
-            <p>{todo.description}</p>
-            <button onClick={() => handleMarkAsDone(index)}>
+          <div className="todo-item" key={index}>
+            <p className="todo-title">{todo.title}</p>
+            <p className="todo-description">{todo.description}</p>
+            <button
+              className="mark-done-button"
+              onClick={() => handleMarkAsDone(index)}
+            >
               Mark as Done
             </button>
           </div>
         ))}
       </div>
-      <div role="list" aria-label="Completed Todo">
-        <h2>Completed Todo</h2>
+      <div className="todo-list" role="list" aria-label="Completed Todo">
+        <h2 className="todo-heading">Completed Todo</h2>
         {completedTodos.map((todo, index) => (
-          <div key={index}>
-            <p>{todo.title}</p>
-            <p>{todo.description}</p>
+          <div className="todo-item" key={index}>
+            <p className="todo-title">{todo.title}</p>
+            <p className="todo-description">{todo.description}</p>
           </div>
         ))}
       </div>
