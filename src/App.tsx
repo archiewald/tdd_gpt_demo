@@ -16,14 +16,25 @@ function useForm(initialState: FormFields) {
     setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  return { formState, handleInputChange };
+  const setValue = (name: keyof FormFields, value: string) => {
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  return { formState, handleInputChange, setValue };
 }
 
 function App() {
-  const { formState, handleInputChange } = useForm({
+  const { formState, handleInputChange, setValue } = useForm({
     title: "",
     description: "",
   });
+
+  const handleAddTodo = () => {
+    // TODO: Implement todo saving logic
+    // For now, just clear the form
+    setValue("title", "");
+    setValue("description", "");
+  };
 
   return (
     <div className="App">
@@ -42,6 +53,7 @@ function App() {
         onChange={handleInputChange}
         maxLength={1024}
       />
+      <button onClick={handleAddTodo}>Add Todo</button>
     </div>
   );
 }
