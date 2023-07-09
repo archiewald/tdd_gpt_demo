@@ -1,26 +1,6 @@
 import React, { useState, ChangeEvent } from "react";
 import "./App.css";
 
-type FormFields = {
-  title: string;
-  description: string;
-};
-
-type Todo = FormFields;
-
-function useForm(initialState: FormFields) {
-  const [formState, setFormState] = useState<FormFields>(initialState);
-
-  const handleInputChange = (
-    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setFormState((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  return { formState, handleInputChange, setFormState };
-}
-
 function App() {
   const [todos, setTodos] = useState<Todo[]>([]);
   const { formState, handleInputChange, setFormState } = useForm({
@@ -64,3 +44,23 @@ function App() {
 }
 
 export default App;
+
+type FormFields = {
+  title: string;
+  description: string;
+};
+
+type Todo = FormFields;
+
+function useForm(initialState: FormFields) {
+  const [formState, setFormState] = useState<FormFields>(initialState);
+
+  const handleInputChange = (
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
+    const { name, value } = e.target;
+    setFormState((prevState) => ({ ...prevState, [name]: value }));
+  };
+
+  return { formState, handleInputChange, setFormState };
+}
