@@ -6,6 +6,8 @@ type FormFields = {
   description: string;
 };
 
+type Todo = FormFields;
+
 function useForm(initialState: FormFields) {
   const [formState, setFormState] = useState<FormFields>(initialState);
 
@@ -16,24 +18,19 @@ function useForm(initialState: FormFields) {
     setFormState((prevState) => ({ ...prevState, [name]: value }));
   };
 
-  const setValue = (name: keyof FormFields, value: string) => {
-    setFormState((prevState) => ({ ...prevState, [name]: value }));
-  };
-
-  return { formState, handleInputChange, setValue };
+  return { formState, handleInputChange, setFormState };
 }
 
 function App() {
-  const { formState, handleInputChange, setValue } = useForm({
+  const [todos, setTodos] = useState<Todo[]>([]);
+  const { formState, handleInputChange, setFormState } = useForm({
     title: "",
     description: "",
   });
 
   const handleAddTodo = () => {
-    // TODO: Implement todo saving logic
-    // For now, just clear the form
-    setValue("title", "");
-    setValue("description", "");
+    setTodos((prevTodos) => [...prevTodos, formState]);
+    setFormState({ title: "", description: "" });
   };
 
   return (
@@ -54,6 +51,14 @@ function App() {
         maxLength={1024}
       />
       <button onClick={handleAddTodo}>Add Todo</button>
+      <div role="list" aria-label="Pending Todo">
+        {todos.map((todo, index) => (
+          <div key={index}>
+            <p>{todo.title}</p>
+            <p>{todo.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }

@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event";
-import { screen, render } from "@testing-library/react";
+import { screen, render, within } from "@testing-library/react";
 import App from "./App";
 
 beforeEach(() => {
@@ -47,9 +47,27 @@ describe("Add Todo Feature", () => {
     expect(titleInput).toHaveValue("");
     expect(descriptionInput).toHaveValue("");
   });
-  it.todo(
-    "should display the new todo item on the 'Pending Todo' list upon successful saving"
-  );
+  it("should display the new todo item on the 'Pending Todo' list upon successful saving", async () => {
+    // given
+    render(<App />);
+    const titleInput = screen.getByPlaceholderText("Todo Title");
+    const descriptionInput = screen.getByPlaceholderText("Todo Description");
+    const button = screen.getByRole("button", { name: /add todo/i });
+
+    // when
+    await userEvent.type(titleInput, "New Todo");
+    await userEvent.type(descriptionInput, "Todo description");
+    await userEvent.click(button);
+
+    // then
+    const pendingTodoList = screen.getByRole("list", { name: /pending todo/i });
+    const todoTitle = within(pendingTodoList).getByText("New Todo");
+    const todoDescription =
+      within(pendingTodoList).getByText("Todo description");
+
+    expect(todoTitle).toBeInTheDocument();
+    expect(todoDescription).toBeInTheDocument();
+  });
 });
 
 describe("Mark Todo as Done Feature", () => {
