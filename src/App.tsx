@@ -35,6 +35,7 @@ function App() {
       />
       <button onClick={handleAddTodo}>Add Todo</button>
       <div role="list" aria-label="Pending Todo">
+        <h2>Pending Todo</h2>
         {pendingTodos.map((todo, index) => (
           <div key={index}>
             <p>{todo.title}</p>
@@ -46,6 +47,7 @@ function App() {
         ))}
       </div>
       <div role="list" aria-label="Completed Todo">
+        <h2>Completed Todo</h2>
         {completedTodos.map((todo, index) => (
           <div key={index}>
             <p>{todo.title}</p>
