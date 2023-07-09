@@ -71,30 +71,22 @@ describe("Add Todo Feature", () => {
 });
 
 describe("Mark Todo as Done Feature", () => {
-  it("should provide each todo item on the 'Pending Todo' list an option to 'Mark as Done'", async () => {
+  it("should allow user to mark a todo item as done", async () => {
     // given
     render(<App />);
-    const titleInput = screen.getByPlaceholderText("Todo Title");
-    const descriptionInput = screen.getByPlaceholderText("Todo Description");
-    const button = screen.getByRole("button", { name: /add todo/i });
+    await addTodo("New Todo", "Todo description");
 
     // when
-    await userEvent.type(titleInput, "New Todo");
-    await userEvent.type(descriptionInput, "Todo description");
-    await userEvent.click(button);
+    await markAsDone("New Todo");
 
     // then
-    const pendingTodoList = screen.getByRole("list", { name: /pending todo/i });
-    const todoTitle = within(pendingTodoList).getByText("New Todo");
-    expect(todoTitle).toBeInTheDocument();
-
-    const markAsDoneButton = within(pendingTodoList).getByRole("button", {
-      name: /mark as done/i,
+    const completedTodoList = screen.getByRole("list", {
+      name: /completed todo/i,
     });
-    expect(markAsDoneButton).toBeInTheDocument();
+    const todoTitle = within(completedTodoList).getByText("New Todo");
+    expect(todoTitle).toBeInTheDocument();
   });
 
-  it.todo("should allow user to mark a todo item as done");
   it.todo(
     "should remove the todo item from 'Pending Todo' list and add it to 'Completed Todo' list upon successful marking"
   );
@@ -118,3 +110,22 @@ describe("Delete Todo Feature", () => {
     "should display an appropriate error message if the deletion process encounters an error"
   );
 });
+
+const addTodo = async (title: string, description: string) => {
+  const titleInput = screen.getByPlaceholderText("Todo Title");
+  const descriptionInput = screen.getByPlaceholderText("Todo Description");
+  const addButton = screen.getByRole("button", { name: /add todo/i });
+
+  await userEvent.type(titleInput, title);
+  await userEvent.type(descriptionInput, description);
+  await userEvent.click(addButton);
+};
+
+const markAsDone = async (title: string) => {
+  const pendingTodoList = screen.getByRole("list", { name: /pending todo/i });
+  const markAsDoneButton = within(pendingTodoList).getByRole("button", {
+    name: /mark as done/i,
+  });
+
+  await userEvent.click(markAsDoneButton);
+};

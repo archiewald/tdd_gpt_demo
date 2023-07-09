@@ -2,14 +2,14 @@ import React, { useState, ChangeEvent } from "react";
 import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState<Todo[]>([]);
+  const { todos, handleMarkAsDone, setTodos } = useTodosState();
   const { formState, handleInputChange, setFormState } = useForm({
     title: "",
     description: "",
   });
 
   const handleAddTodo = () => {
-    setTodos((prevTodos) => [...prevTodos, formState]);
+    setTodos((prevTodos) => [...prevTodos, { ...formState, complete: false }]);
     setFormState({ title: "", description: "" });
   };
 
@@ -42,22 +42,26 @@ function App() {
           </div>
         ))}
       </div>
+      <div role="list" aria-label="Completed Todo">
+        {completedTodos.map((todo, index) => (
+          <div key={index}>
+            <p>{todo.title}</p>
+            <p>{todo.description}</p>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
 
 export default App;
 
-function handleMarkAsDone(index: number) {
-  // Logic to mark the todo as done
-}
-
 type FormFields = {
   title: string;
   description: string;
 };
 
-type Todo = FormFields;
+type Todo = FormFields & { complete: boolean };
 
 function useForm(initialState: FormFields) {
   const [formState, setFormState] = useState<FormFields>(initialState);
@@ -70,4 +74,17 @@ function useForm(initialState: FormFields) {
   };
 
   return { formState, handleInputChange, setFormState };
+}
+
+function useTodosState(initialState: Todo[] = []) {
+  const [todos, setTodos] = useState<Todo[]>(initialState);
+
+  const handleMarkAsDone = (index: number) => {
+    const newTodos = [...todos];
+    // Here we toggle the complete state of the todo
+    newTodos[index] = { ...newTodos[index], complete: true };
+    setTodos(newTodos);
+  };
+
+  return { todos, handleMarkAsDone, setTodos };
 }
