@@ -13,6 +13,9 @@ function App() {
     setFormState({ title: "", description: "" });
   };
 
+  const pendingTodos = todos.filter((todo) => !todo.complete);
+  const completedTodos = todos.filter((todo) => todo.complete);
+
   return (
     <div className="App">
       <input
@@ -32,7 +35,7 @@ function App() {
       />
       <button onClick={handleAddTodo}>Add Todo</button>
       <div role="list" aria-label="Pending Todo">
-        {todos.map((todo, index) => (
+        {pendingTodos.map((todo, index) => (
           <div key={index}>
             <p>{todo.title}</p>
             <p>{todo.description}</p>
