@@ -1,7 +1,23 @@
+import userEvent from "@testing-library/user-event";
+import { screen, render } from "@testing-library/react";
+import App from "./App";
+
+beforeEach(() => {
+  userEvent.setup();
+});
+
 describe("Add Todo Feature", () => {
-  it.todo(
-    "should allow user to input a title for the new todo item, not exceeding 256 characters"
-  );
+  it("should allow user to input a title for the new todo item, not exceeding 256 characters", () => {
+    // given
+    render(<App />);
+    const input = screen.getByPlaceholderText("Todo Title");
+
+    // when
+    userEvent.type(input, "a".repeat(256) + "b");
+
+    // then
+    expect(input).toHaveValue("a".repeat(256));
+  });
   it.todo(
     "should allow user to add an optional description to the new todo item, not exceeding 1024 characters"
   );
