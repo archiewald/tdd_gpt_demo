@@ -36,6 +36,9 @@ function App() {
           <div key={index}>
             <p>{todo.title}</p>
             <p>{todo.description}</p>
+            <button onClick={() => handleMarkAsDone(index)}>
+              Mark as Done
+            </button>
           </div>
         ))}
       </div>
@@ -44,6 +47,10 @@ function App() {
 }
 
 export default App;
+
+function handleMarkAsDone(index: number) {
+  // Logic to mark the todo as done
+}
 
 type FormFields = {
   title: string;

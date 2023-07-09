@@ -71,9 +71,29 @@ describe("Add Todo Feature", () => {
 });
 
 describe("Mark Todo as Done Feature", () => {
-  it.todo(
-    "should provide each todo item on the 'Pending Todo' list an option to 'Mark as Done'"
-  );
+  it("should provide each todo item on the 'Pending Todo' list an option to 'Mark as Done'", async () => {
+    // given
+    render(<App />);
+    const titleInput = screen.getByPlaceholderText("Todo Title");
+    const descriptionInput = screen.getByPlaceholderText("Todo Description");
+    const button = screen.getByRole("button", { name: /add todo/i });
+
+    // when
+    await userEvent.type(titleInput, "New Todo");
+    await userEvent.type(descriptionInput, "Todo description");
+    await userEvent.click(button);
+
+    // then
+    const pendingTodoList = screen.getByRole("list", { name: /pending todo/i });
+    const todoTitle = within(pendingTodoList).getByText("New Todo");
+    expect(todoTitle).toBeInTheDocument();
+
+    const markAsDoneButton = within(pendingTodoList).getByRole("button", {
+      name: /mark as done/i,
+    });
+    expect(markAsDoneButton).toBeInTheDocument();
+  });
+
   it.todo("should allow user to mark a todo item as done");
   it.todo(
     "should remove the todo item from 'Pending Todo' list and add it to 'Completed Todo' list upon successful marking"
