@@ -1,5 +1,5 @@
 import userEvent from "@testing-library/user-event";
-import { screen, render, within } from "@testing-library/react";
+import { screen, render } from "@testing-library/react";
 import App from "./App";
 
 beforeEach(() => {
