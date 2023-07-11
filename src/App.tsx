@@ -6,13 +6,21 @@ type FormFields = {
   description: string;
 };
 
+type TodoItem = {
+  title: string;
+  description: string;
+};
+
 function App() {
   const { formState, handleInputChange, setFormState } = useForm({
     title: "",
     description: "",
   });
 
+  const [todos, setTodos] = useState<Array<TodoItem>>([]);
+
   const handleAddTodo = () => {
+    setTodos((prevTodos) => [...prevTodos, formState]);
     setFormState({ title: "", description: "" });
   };
 
@@ -38,6 +46,14 @@ function App() {
       <button className="add-button" onClick={handleAddTodo}>
         Add Todo
       </button>
+      <ul>
+        {todos.map((todo, index) => (
+          <li key={index}>
+            <h2>{todo.title}</h2>
+            <p>{todo.description}</p>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 }

@@ -48,4 +48,29 @@ describe("Add Todo Feature", () => {
     expect(titleInput).toHaveValue("");
     expect(descriptionInput).toHaveValue("");
   });
+
+  it("should add a new todo item to the 'Pending Todo' list when the 'Add Todo' button is clicked", async () => {
+    // given
+    render(<App />);
+    const titleInput = screen.getByPlaceholderText("Todo Title");
+    const descriptionInput = screen.getByPlaceholderText("Todo Description");
+    const addButton = screen.getByRole("button", { name: /add todo/i });
+
+    // when
+    await userEvent.type(titleInput, "Learn TDD");
+    await userEvent.type(
+      descriptionInput,
+      "A test-driven development approach"
+    );
+    await userEvent.click(addButton);
+
+    // then
+    const todoItems = screen.getAllByRole("listitem");
+
+    expect(todoItems).toHaveLength(1);
+    expect(todoItems[0]).toHaveTextContent("Learn TDD");
+    expect(todoItems[0]).toHaveTextContent(
+      "A test-driven development approach"
+    );
+  });
 });
