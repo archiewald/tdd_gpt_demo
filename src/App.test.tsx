@@ -31,7 +31,7 @@ describe("Add Todo Feature", () => {
     expect(textarea).toHaveValue("a".repeat(1024));
   });
 
-  it("should allow user to save the new todo item by clicking on the 'Add Todo' button", async () => {
+  it("should clear the form when clicking 'Add Todo' button", async () => {
     // given
     render(<App />);
     const titleInput = screen.getByPlaceholderText("Todo Title");
