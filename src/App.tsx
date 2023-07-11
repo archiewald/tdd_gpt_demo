@@ -17,10 +17,10 @@ function App() {
     description: "",
   });
 
-  const [todos, setTodos] = useState<Array<TodoItem>>([]);
+  const { todos, addTodo } = useTodos();
 
   const handleAddTodo = () => {
-    setTodos((prevTodos) => [...prevTodos, formState]);
+    addTodo(formState);
     setFormState({ title: "", description: "" });
   };
 
@@ -71,4 +71,14 @@ function useForm(initialState: FormFields) {
   };
 
   return { formState, handleInputChange, setFormState };
+}
+
+function useTodos() {
+  const [todos, setTodos] = useState<Array<TodoItem>>([]);
+
+  const addTodo = (todo: TodoItem) => {
+    setTodos((prevTodos) => [...prevTodos, todo]);
+  };
+
+  return { todos, addTodo };
 }
